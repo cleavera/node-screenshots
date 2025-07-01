@@ -1,7 +1,7 @@
 use napi::{bindgen_prelude::AsyncTask, Env, Error, JsBuffer, Result, Task};
 use xcap::image::{
     codecs::{bmp::BmpEncoder, jpeg::JpegEncoder, png::PngEncoder},
-    DynamicImage, RgbaImage,
+    DynamicImage, RgbaImage, Rgba,
 };
 
 fn bytes_to_buffer(env: Env, bytes: Vec<u8>, copy_output_data: Option<bool>) -> Result<JsBuffer> {
@@ -85,6 +85,25 @@ impl Task for AsyncEncodeImage {
 
     fn resolve(&mut self, env: Env, output: Self::Output) -> Result<Self::JsValue> {
         bytes_to_buffer(env, output, self.copy_output_data)
+    }
+}
+
+#[napi(object)]
+pub struct PixelRgba {
+    pub r: u8,
+    pub g: u8,
+    pub b: u8,
+    pub a: u8,
+}
+
+impl From<&Rgba<u8>> for PixelRgba {
+    fn from(rgba_pixel: &Rgba<u8>) -> Self {
+        PixelRgba {
+            r: rgba_pixel.0[0],
+            g: rgba_pixel.0[1],
+            b: rgba_pixel.0[2],
+            a: rgba_pixel.0[3],
+        }
     }
 }
 
@@ -177,6 +196,11 @@ impl Image {
             encoder: Encoder::Raw,
             copy_output_data,
         })
+    }
+
+    #[napi]
+    pub fn get_pixel(&self, x: u32, y: u32) -> PixelRgba {
+        self.rgba_image.get_pixel(x, y).into()
     }
 }
 
