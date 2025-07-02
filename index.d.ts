@@ -16,6 +16,7 @@ export declare class Image {
   toBmp(copyOutputData?: boolean | undefined | null): Promise<Buffer>
   toRawSync(copyOutputData?: boolean | undefined | null): Buffer
   toRaw(copyOutputData?: boolean | undefined | null): Promise<Buffer>
+  getPixelRgba(x: number, y: number): number
 }
 export declare class Monitor {
   /** List all monitors */

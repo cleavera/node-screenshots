@@ -115,6 +115,7 @@ Full typeScript type definition: [index.d.ts](./index.d.ts)
 - `toBmp(copyOutputData?: boolean | undefined | null): Promise<Buffer>`: Asynchronously Convert to bmp
 - `toRawSync(copyOutputData?: boolean | undefined | null): Buffer`: Synchronously Convert to raw(RGBA data)
 - `toRaw(copyOutputData?: boolean | undefined | null): Promise<Buffer>`: Asynchronously Convert to raw(RGBA data)
+- `getPixelRgba(x: number, y: number): number`: Get the rgba value for a pixel, returns a number in the format `0xRRGGBBAA`
 
 `copyOutputData`: pass related parameters in electron, otherwise electron will crash, nodejs does not pass or passes false, performance will be better, for more information refer to https://github.com/napi-rs/napi-rs/issues/1346
 
